@@ -1,24 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://www.google.com/recaptcha/api.js?render=6Ldh16gZAAAAALAwoSUIWJXf2l_FO_2uVpmiXsdL"></script>
 </head>
+
 <body>
-   <button onclick="onClick()">submit</button>
-        <script>
-            function onClick(e) {
+    <button onclick="onClick()">submit</button>
+    <script src="./jquery.js"></script>
+    <script>
+        function onClick(e) {
             //   e.preventDefault();
-              grecaptcha.ready(function() {
-                grecaptcha.execute('6Ldh16gZAAAAALAwoSUIWJXf2l_FO_2uVpmiXsdL', {action: 'submit'}).then(function(token) {
+            grecaptcha.ready(function () {
+                grecaptcha.execute('6Ldh16gZAAAAALAwoSUIWJXf2l_FO_2uVpmiXsdL', { action: 'submit' }).then(function (token) {
                     // Add your logic to submit to your backend server here.
                     console.log(token)
                     console.log('333')
+                    $.ajax({
+                        url: 'https://www.google.com/recaptcha/api/siteverify',
+                        type: 'POST',
+                        headers: { 
+                        'Content-Type': 'application/x-www-form-urlencoded'  //multipart/form-data;boundary=--xxxxxxx   application/json
+                    },
+                        data: {
+                            secret: "6Ldh16gZAAAAACOP7lqUQM9r8bxG7Tq8xEZeO2qt",
+                            response: token
+                        },
+                        success: function(res){
+                            console.log(res)
+                        }
+                    })
                 });
-              });
-            }
-        </script>
+            });
+        }
+        // return;
+        // var widgetId;
+        // var onloadCallback = function () {
+
+        //     widgetId = grecaptcha.render('robot', {
+        //         'sitekey': '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+        //     });
+
+        // };
+        // function getResponseFromRecaptcha() {
+        //     var response = grecaptcha.getResponse(widgetId); // <---看这里
+        //     if (response.length == 0) { //返回""或 token（如：03AHqfIOmtBMGg686uP3YPAN7hJyaqUi69SSrEnC3Km7Hcnr5y1u-A-yp8z28yBvgVxqWiRndLrXrk_TyJrdob3tVh4BGnI4YNsoKocqZmbilGnJRX6Mxxj6jQ0AkhoRangAVFmRFZyy7RH5u5ruM5t_H7-P4GNnaFUaMELgOYyJ5ZgUtEMwBS1iNrGg6B6MZmgd4kcJXhWYR4vU_RwqFOuzxd9NMF7OCLl8FzOhN4baI5S2krnORqMBkiWenKNUtCuKfB1HzGdiVog7mzBKJvseSBlAPXrTN-Gg)
+        //         console.log('reCaptcha not verified');
+        //         return false;
+        //     } else {
+        //         console.log('reCaptcha verified');
+        //         return true;
+        //     }
+        // }
+    </script>
 </body>
+
 </html>
